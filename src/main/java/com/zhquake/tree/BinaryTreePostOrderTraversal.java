@@ -6,65 +6,78 @@ import java.util.Stack;
 
 import com.zhquake.leetcode.common.TreeNode;
 
-public class BinaryTreeInOrderTraversal {
+public class BinaryTreePostOrderTraversal {
     public static List<Integer> traverseWithRecursive(TreeNode root) {
         List<Integer> result = new ArrayList<Integer>();
+
         if (root == null)
             return result;
 
         result.addAll(traverseWithRecursive(root.left));
-        result.add(root.val);
         result.addAll(traverseWithRecursive(root.right));
+        result.add(root.val);
 
         return result;
+
     }
 
     public static List<Integer> traverseWithIterative1(TreeNode root) {
         List<Integer> result = new ArrayList<Integer>();
+
         if (root == null)
             return result;
 
         Stack<TreeNode> stack = new Stack<TreeNode>();
+        TreeNode cur = root;
+        TreeNode previsited = root;
         stack.push(root);
-        // Use isLeftVisited to mark if cur's left child is already visited
-        boolean isLeftVisited = false;
         while (!stack.isEmpty()) {
-            TreeNode cur = stack.peek();
-            if (cur.left == null || isLeftVisited) {
+            cur = stack.peek();
+            // In post-order, the root of a tree will be visited at last, and
+            // root's children are the also roots of the child trees. So a root
+            // and its children will be visited closely.
+            if ((cur.left == null && cur.right == null)
+            // notice that previsited may be null
+                    || (previsited == cur.left || previsited == cur.right)) {
                 result.add(cur.val);
+                previsited = cur;
                 stack.pop();
-                isLeftVisited = true;
-                if (cur.right != null) {
-                    stack.push(cur.right);
-                    isLeftVisited = false;
-                }
             } else {
-                stack.push(cur.left);
-                isLeftVisited = false;
+                if (cur.right != null) {
+                    stack.add(cur.right);
+                }
+
+                if (cur.left != null) {
+                    stack.add(cur.left);
+                }
             }
         }
-
         return result;
-
     }
 
     public static List<Integer> traverseWithIterative2(TreeNode root) {
         List<Integer> result = new ArrayList<Integer>();
+
         if (root == null)
             return result;
 
         Stack<TreeNode> parentStack = new Stack<TreeNode>();
-
         TreeNode cur = root;
-        // one push, one pop, only push cur node, not cur's child node
+        TreeNode previsited = root;
         while (!parentStack.isEmpty() || cur != null) {
             if (cur != null) {
                 parentStack.push(cur);
                 cur = cur.left;
             } else {
-                cur = parentStack.pop();
-                result.add(cur.val);
-                cur = cur.right;
+                cur = parentStack.peek();
+                if (cur.right != null && cur.right != previsited) {
+                    cur = cur.right;
+                } else {
+                    result.add(cur.val);
+                    previsited = cur;
+                    parentStack.pop();
+                    cur = null;
+                }
             }
         }
 
@@ -75,5 +88,6 @@ public class BinaryTreeInOrderTraversal {
         System.out.println(traverseWithRecursive(TreeNode.SAMPLE_TREE));
         System.out.println(traverseWithIterative1(TreeNode.SAMPLE_TREE));
         System.out.println(traverseWithIterative2(TreeNode.SAMPLE_TREE));
+
     }
 }

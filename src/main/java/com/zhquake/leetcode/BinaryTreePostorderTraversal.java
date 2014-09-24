@@ -16,7 +16,7 @@ public class BinaryTreePostorderTraversal {
 
 		public List<Integer> postorderTraversal(TreeNode root) {
 			// return postorderRecursive(root);
-			return postorderInterative2(root);
+            return postorderInterative1(root);
 		}
 
 		private List<Integer> postorderRecursive(TreeNode root) {

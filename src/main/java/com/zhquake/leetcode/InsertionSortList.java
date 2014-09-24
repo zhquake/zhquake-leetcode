@@ -50,14 +50,9 @@ public class InsertionSortList {
     }
 
     public static void main(String[] args) {
-        ListNode head = new ListNode(3123);
-        head.next = new ListNode(1231);
-        head.next.next = new ListNode(1931);
-        head.next.next.next = new ListNode(4231);
-
         InsertionSortList insertionSortList = new InsertionSortList();
         Solution solution = insertionSortList.new Solution();
 
-        System.out.println(solution.insertionSortList(head));
+        System.out.println(solution.insertionSortList(ListNode.LIST_SAMPLE));
     }
 }
