@@ -13,48 +13,58 @@ package com.zhquake.leetcode;
  * @author Zhang, Zhen(zhezhang@microstrategy.com) Sep 29, 2014
  */
 public class Candy {
-    public class Solution {
-        public int candy(int[] ratings) {
-            if (ratings.length == 0)
-                return 0;
+	public class Solution {
+		// time: O(n) space:O(1)
+		public int candy(int[] ratings) {
+			if (ratings.length == 0)
+				return 0;
 
-            if (ratings.length == 1)
-                return 1;
+			if (ratings.length == 1)
+				return 1;
 
-            int sum = 0;
-            int lastLeastCandy = 1;
+			int sum = 0;
+			int lastLeast = 0;
+			
+			for (int i = 0; i < ratings.length;) {
+				int j = i;
+				for (; j < ratings.length - 1; j++) {
+					if (ratings[j] <= ratings[j + 1]) {
+						break;
+					}
+				}
+				int count = j - i + 1;
 
-            for (int i = 0; i < ratings.length;) {
-                int j = i;
-                int curLeastCandy = 1;
-                for (; j < ratings.length - 1; j++) {
-                    if (ratings[j] > ratings[j + 1]) {
-                        curLeastCandy++;
-                    } else {
-                        break;
-                    }
-                }
-                int count = j - i;
-                i = j + 1;
-                if (curLeastCandy > lastLeastCandy) {
-                    lastLeastCandy = curLeastCandy;
-                }
-                sum += (2 * lastLeastCandy - count) * (count + 1) / 2;
+			int blockFirstCandyMin;
+				if (i - 1 < 0 || ratings[i] == ratings[i - 1]) {
+					blockFirstCandyMin = 1;
+				} else {
+					blockFirstCandyMin = lastLeast +1;
+				}
 
-                if (j + 1 < ratings.length && ratings[j + 1] > ratings[j]) {
-                    lastLeastCandy = lastLeastCandy - count + 1;
-                } else {
-                    lastLeastCandy = 1;
-                }
-            }
-            return sum;
-        }
-    }
+				if (count >= blockFirstCandyMin) {
+					sum += (count + 1) * count / 2;
+				} else {
+					sum = sum + blockFirstCandyMin;
+					sum += (count) * (count - 1) / 2;
+				}
 
-    public static void main(String[] args) {
-        Candy candy = new Candy();
-        Solution solution = candy.new Solution();
-        System.out.println(solution.candy(new int[] {
-                3, 2 }));
-    }
+				if(count == 1){
+					lastLeast = blockFirstCandyMin;
+				}else{
+					lastLeast = 1;
+				}
+				
+				i = i + count;
+			}
+			return sum;
+		}
+	}
+
+	public static void main(String[] args) {
+		Candy candy = new Candy();
+		Solution solution = candy.new Solution();
+		System.out.println(solution.candy(new int[] { 3, 2 }));
+		System.out.println(solution.candy(new int[] { 2, 3, 2 }));
+		System.out.println(solution.candy(new int[] { 1, 3, 5 }));
+	}
 }
