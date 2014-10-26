@@ -1,7 +1,5 @@
 package com.zhquake.leetcode;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 /**
  * Design and implement a data structure for Least Recently Used (LRU) cache. It

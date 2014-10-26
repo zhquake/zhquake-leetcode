@@ -1,9 +1,5 @@
 package com.zhquake.leetcode;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.Map;
 
 /**
  * Write a function to find the longest common prefix string amongst an array of

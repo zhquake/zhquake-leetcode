@@ -3,7 +3,6 @@ package com.zhquake.leetcode;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.zhquake.leetcode.BinaryTreeLevelOrderTraversalII.Solution;
 import com.zhquake.leetcode.common.TreeNode;
 
 /**
